@@ -30,7 +30,7 @@ data:
   
   # Data loading
   dataloader:
-    batch_size: 128
+    batch_size: 32         # Reduced from 128 to 32 to avoid CUDA OOM
     num_workers: 4
     pin_memory: true
     shuffle_train: true

@@ -236,6 +236,25 @@ class SpectrogramAugmentation(nn.Module):
         aug_config = config.get('augmentation', {})
         transforms_config = aug_config.get('transforms', {})
         
+        # Resize configuration (to ensure consistent tensor sizes)
+        resize_config = aug_config.get('resize', {})
+        if resize_config.get('enabled', True):
+            height = resize_config.get('height', 128)
+            width = resize_config.get('width', 1293)
+            interpolation_mode = resize_config.get('interpolation', 'bilinear')
+            
+            # Map interpolation string to torchvision mode
+            interp_map = {
+                'bilinear': T.InterpolationMode.BILINEAR,
+                'bicubic': T.InterpolationMode.BICUBIC,
+                'nearest': T.InterpolationMode.NEAREST
+            }
+            interp = interp_map.get(interpolation_mode, T.InterpolationMode.BILINEAR)
+            
+            self.resize = T.Resize((height, width), interpolation=interp, antialias=True)
+        else:
+            self.resize = None
+        
         # Build augmentation list
         augmentations = []
         
@@ -320,6 +339,10 @@ class SpectrogramAugmentation(nn.Module):
         Returns:
             Augmented and normalized tensor [C, H, W]
         """
+        # First, resize to ensure consistent dimensions across all samples
+        if self.resize is not None:
+            x = self.resize(x)
+        
         # Apply random augmentations
         x = self.random_aug(x)
         
@@ -343,9 +366,31 @@ def get_augmentation_pipeline(config: dict, training: bool = True) -> nn.Module:
     if training:
         return SpectrogramAugmentation(config)
     else:
-        # Validation/test: only normalize
-        norm_config = config.get('augmentation', {}).get('normalization', {})
-        return T.Normalize(
+        # Validation/test: resize and normalize only
+        aug_config = config.get('augmentation', {})
+        resize_config = aug_config.get('resize', {})
+        norm_config = aug_config.get('normalization', {})
+        
+        transforms = []
+        
+        # Add resize if enabled
+        if resize_config.get('enabled', True):
+            height = resize_config.get('height', 128)
+            width = resize_config.get('width', 1293)
+            interpolation_mode = resize_config.get('interpolation', 'bilinear')
+            
+            interp_map = {
+                'bilinear': T.InterpolationMode.BILINEAR,
+                'bicubic': T.InterpolationMode.BICUBIC,
+                'nearest': T.InterpolationMode.NEAREST
+            }
+            interp = interp_map.get(interpolation_mode, T.InterpolationMode.BILINEAR)
+            transforms.append(T.Resize((height, width), interpolation=interp, antialias=True))
+        
+        # Add normalization
+        transforms.append(T.Normalize(
             mean=norm_config.get('mean', [0.485, 0.456, 0.406]),
             std=norm_config.get('std', [0.229, 0.224, 0.225])
-        )
+        ))
+        
+        return T.Compose(transforms)

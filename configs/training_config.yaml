@@ -3,7 +3,7 @@
 training:
   # Basic training parameters
   epochs: 100
-  batch_size: 128
+  batch_size: 32            # Reduced from 128 to 32 to avoid CUDA OOM
   num_workers: 4            # DataLoader workers
   pin_memory: true          # Pin memory for faster GPU transfer
   
