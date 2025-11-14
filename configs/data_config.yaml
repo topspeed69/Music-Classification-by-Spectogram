@@ -46,9 +46,9 @@ augmentation:
   
   # Individual augmentation settings
   transforms:
-    # 1. Random Crop
+    # 1. Random Crop - DISABLED for consistent CNN input sizes
     random_crop:
-      enabled: true
+      enabled: false
       probability: 0.8
       crop_size: [96, 970]  # [height, width] - 75% of original
       scale: [0.7, 1.0]     # Random scale range

@@ -258,8 +258,8 @@ class SpectrogramAugmentation(nn.Module):
         # Build augmentation list
         augmentations = []
         
-        # 1. Random Crop
-        if transforms_config.get('random_crop', {}).get('enabled', True):
+        # 1. Random Crop - Disabled by default for consistent CNN input sizes
+        if transforms_config.get('random_crop', {}).get('enabled', False):
             crop_cfg = transforms_config['random_crop']
             augmentations.append(
                 RandomCrop(
