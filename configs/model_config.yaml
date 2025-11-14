@@ -1,0 +1,77 @@
+# Model Configuration for Self-Supervised Audio Encoder
+
+model:
+  name: "AudioEncoderCNN"
+  type: "cnn_encoder"
+  
+  # Input specifications
+  input:
+    n_mels: 128              # Number of mel frequency bins
+    time_steps: 1293         # Approximate time steps for 30s audio
+    channels: 3              # RGB channels (converted from grayscale)
+  
+  # CNN Encoder Architecture
+  encoder:
+    # Convolutional blocks configuration
+    conv_blocks:
+      - filters: 64
+        kernel_size: [3, 3]
+        stride: [1, 1]
+        padding: [1, 1]
+        pool_size: [2, 2]
+        dropout: 0.1
+      
+      - filters: 128
+        kernel_size: [3, 3]
+        stride: [1, 1]
+        padding: [1, 1]
+        pool_size: [2, 2]
+        dropout: 0.2
+      
+      - filters: 256
+        kernel_size: [3, 3]
+        stride: [1, 1]
+        padding: [1, 1]
+        pool_size: [2, 2]
+        dropout: 0.2
+      
+      - filters: 512
+        kernel_size: [3, 3]
+        stride: [1, 1]
+        padding: [1, 1]
+        pool_size: [2, 2]
+        dropout: 0.3
+    
+    # Global pooling
+    global_pooling: "avg"    # Options: 'avg', 'max'
+    
+    # Batch normalization
+    use_batch_norm: true
+    
+    # Activation function
+    activation: "relu"        # Options: 'relu', 'leaky_relu', 'elu'
+  
+  # Projection Head for Contrastive Learning
+  projection_head:
+    hidden_dim: 512           # Hidden layer dimension
+    embedding_dim: 256        # Final embedding dimension
+    num_layers: 2             # Number of layers in projection head
+    use_batch_norm: true
+    dropout: 0.1
+  
+  # Feature extractor (for inference)
+  feature_extractor:
+    embedding_dim: 256        # Dimension of output embeddings
+    normalize: true           # L2 normalize embeddings
+
+# Model initialization
+initialization:
+  method: "kaiming_normal"   # Options: 'kaiming_normal', 'xavier_uniform', 'normal'
+  activation: "relu"
+  
+# Checkpoint settings
+checkpoint:
+  save_frequency: 5          # Save every N epochs
+  save_best_only: true       # Only save when validation improves
+  metric: "val_loss"         # Metric to monitor for best model
+  mode: "min"                # 'min' or 'max'

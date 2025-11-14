@@ -1,0 +1,56 @@
+# CNN Module Requirements
+# Deep Learning Framework and Dependencies
+
+# PyTorch and vision
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Image augmentation
+albumentations>=1.3.0
+imgaug>=0.4.0
+
+# Audio augmentation (optional, for advanced augmentations)
+audiomentations>=0.30.0
+
+# Configuration management
+pyyaml>=6.0
+omegaconf>=2.3.0
+
+# Progress tracking
+tqdm>=4.65.0
+
+# Metrics and evaluation
+scikit-learn>=1.2.0
+scipy>=1.10.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Logging
+tensorboard>=2.12.0
+# wandb>=0.15.0  # Uncomment for Weights & Biases
+
+# Image processing
+opencv-python>=4.7.0
+Pillow>=9.5.0
+
+# Numerical computation
+numpy>=1.24.0
+
+# Data handling
+pandas>=2.0.0
+
+# Model serialization
+h5py>=3.8.0
+
+# Efficient similarity search (optional but recommended)
+# faiss-cpu>=1.7.4  # For CPU
+# faiss-gpu>=1.7.4  # For GPU (requires CUDA)
+
+# Memory optimization
+joblib>=1.2.0
+
+# Mixed precision training
+# nvidia-apex  # Uncomment for advanced mixed precision (requires CUDA)

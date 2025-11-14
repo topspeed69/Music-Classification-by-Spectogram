@@ -1,0 +1,46 @@
+# Image and audio files ----------------------------------------------------------------------------------------------
+*.jpg
+*.jpeg
+*.png
+*.bmp
+*.tif
+*.tiff
+*.heic
+*.JPG
+*.JPEG
+*.PNG
+*.BMP
+*.TIF
+*.TIFF
+*.HEIC
+*.wav
+*.m4a
+
+
+# Folders -------------------------------------------------------------------------------------------------------------
+AudioToSpectogram/output/
+AudioToSpectogram/output_mel
+AudioToSpectogram/fma_small_dataset/
+ 
+# GitHub Python GitIgnore ----------------------------------------------------------------------------------------------
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# dotenv
+.env
+
+# virtualenv
+.venv*
+venv*/
+ENV*/
+mlproj/
+
+
+
+# General
+.DS_Store
+.AppleDouble
+.LSOverride
+.vscode

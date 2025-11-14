@@ -1,0 +1,83 @@
+# Training Configuration for Self-Supervised Learning
+
+training:
+  # Basic training parameters
+  epochs: 100
+  batch_size: 128
+  num_workers: 4            # DataLoader workers
+  pin_memory: true          # Pin memory for faster GPU transfer
+  
+  # Optimizer settings
+  optimizer:
+    type: "adam"            # Options: 'adam', 'sgd', 'adamw'
+    learning_rate: 0.001
+    weight_decay: 1.0e-4
+    betas: [0.9, 0.999]     # For Adam optimizer
+    
+  # Learning rate scheduler
+  scheduler:
+    type: "cosine"          # Options: 'cosine', 'step', 'exponential', 'plateau'
+    warmup_epochs: 10       # Warmup period
+    min_lr: 1.0e-6
+    # For step scheduler
+    step_size: 30
+    gamma: 0.1
+    # For plateau scheduler
+    patience: 10
+    factor: 0.5
+  
+  # Contrastive learning parameters
+  contrastive:
+    loss_type: "nt_xent"    # NT-Xent (SimCLR loss)
+    temperature: 0.5        # Temperature parameter for softmax
+    use_cosine_similarity: true
+    
+  # Mixed precision training
+  mixed_precision:
+    enabled: true           # Use automatic mixed precision
+    opt_level: "O1"        # AMP optimization level
+  
+  # Gradient settings
+  gradient:
+    clip_norm: 1.0          # Gradient clipping norm
+    accumulation_steps: 1   # Gradient accumulation steps
+  
+  # Validation settings
+  validation:
+    frequency: 1            # Validate every N epochs
+    metric: "val_loss"      # Primary validation metric
+  
+  # Early stopping
+  early_stopping:
+    enabled: true
+    patience: 20            # Stop if no improvement after N epochs
+    min_delta: 0.001       # Minimum change to qualify as improvement
+  
+  # Logging
+  logging:
+    log_frequency: 10       # Log every N batches
+    use_tensorboard: true
+    use_wandb: false        # Weights & Biases integration
+    experiment_name: "music_ssl_baseline"
+  
+  # Reproducibility
+  seed: 42
+  deterministic: false      # Set to true for reproducibility (slower)
+  
+  # Device settings
+  device: "cuda"            # Options: 'cuda', 'cpu', 'mps' (for Mac M1/M2)
+  gpu_ids: [0]              # GPU IDs to use (for multi-GPU)
+  
+# Paths
+paths:
+  data_dir: "AudioToSpectogram/output_mel"
+  checkpoint_dir: "checkpoints"
+  log_dir: "logs"
+  tensorboard_dir: "logs/tensorboard"
+  
+# Resume training
+resume:
+  enabled: false
+  checkpoint_path: ""       # Path to checkpoint to resume from
+  resume_optimizer: true    # Resume optimizer state
+  resume_scheduler: true    # Resume scheduler state
