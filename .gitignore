@@ -25,6 +25,10 @@ AudioToSpectogram/output_mel/*
 AudioToSpectogram/fma_small_dataset/*
 !AudioToSpectogram/fma_small_dataset/README.md
  
+# Embeddings DB: ignore generated / large files; keep README to preserve directory
+embeddings_db/*
+!embeddings_db/README.md
+ 
 # GitHub Python GitIgnore ----------------------------------------------------------------------------------------------
 # Byte-compiled / optimized / DLL files
 __pycache__/
