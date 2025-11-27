@@ -2,9 +2,9 @@
 
 training:
   # Basic training parameters
-  epochs: 50
-  batch_size: 32            # Reduced from 128 to 32 to avoid CUDA OOM
-  num_workers: 4            # DataLoader workers
+  epochs: 200
+  batch_size: 64            # Reduced from 128 to 64 to avoid CUDA OOM
+  num_workers: 15            # DataLoader workers
   pin_memory: true          # Pin memory for faster GPU transfer
   
   # Optimizer settings
@@ -17,7 +17,7 @@ training:
   # Learning rate scheduler
   scheduler:
     type: "cosine"          # Options: 'cosine', 'step', 'exponential', 'plateau'
-    warmup_epochs: 10       # Warmup period
+    warmup_epochs: 20       # Warmup period
     min_lr: 1.0e-6
     # For step scheduler
     step_size: 30
@@ -50,7 +50,7 @@ training:
   # Early stopping
   early_stopping:
     enabled: true
-    patience: 20            # Stop if no improvement after N epochs
+    patience: 30            # Stop if no improvement after N epochs
     min_delta: 0.001       # Minimum change to qualify as improvement
   
   # Logging

@@ -15,6 +15,18 @@ from .augmentations import (
     get_augmentation_pipeline
 )
 
+from .audio_augmentations import (
+    ContrastiveAudioAugmentation,
+    AudioDatasetWithAugmentation,
+    PitchShift,
+    TempoStretch,
+    GainAdjustment,
+    ParametricEQ,
+    DynamicRangeCompression,
+    AddNoise,
+    AddReverb
+)
+
 __all__ = [
     'RandomCrop',
     'ColorJitter',
@@ -24,5 +36,14 @@ __all__ = [
     'TimeMasking',
     'RandomAugmentation',
     'SpectrogramAugmentation',
-    'get_augmentation_pipeline'
+    'get_augmentation_pipeline',
+    'ContrastiveAudioAugmentation',
+    'AudioDatasetWithAugmentation',
+    'PitchShift',
+    'TempoStretch',
+    'GainAdjustment',
+    'ParametricEQ',
+    'DynamicRangeCompression',
+    'AddNoise',
+    'AddReverb'
 ]

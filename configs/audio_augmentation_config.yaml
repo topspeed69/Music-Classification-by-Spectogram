@@ -1,0 +1,99 @@
+# Audio Augmentation Configuration
+# Configuration for two-stage augmentation pipeline
+
+augmentation:
+  # Audio-specific augmentation settings
+  audio:
+    # Audio parameters
+    sample_rate: 22050
+    n_fft: 2048
+    hop_length: 512
+    n_mels: 128
+    duration: 3.0  # Duration in seconds
+    
+    # Number of augmentations to apply
+    num_waveform_augs: 3      # Randomly select 3 waveform augmentations
+    num_spectrogram_augs: 2    # Randomly select 2 spectrogram augmentations
+    
+    # Worker pool settings
+    max_workers: 10  # Maximum worker threads (capped at 10 for optimal performance)
+
+    # Waveform augmentation probabilities (Stage 1)
+    waveform_probs:
+      pitch_shift: 0.6       # Shift pitch by ±1-3 semitones
+      tempo_stretch: 0.5     # Stretch tempo by ±5-12%
+      gain: 0.7              # Adjust gain by ±3-6 dB
+      eq: 0.5                # Apply parametric EQ filtering
+      compression: 0.4       # Dynamic range compression
+      noise: 0.6             # Add environmental noise (SNR 10-30 dB)
+      reverb: 0.5            # Add convolutional reverb
+    
+    # Spectrogram augmentation probabilities (Stage 2)
+    spectrogram_probs:
+      time_mask: 0.8         # Time masking (SpecAugment)
+      freq_mask: 0.8         # Frequency masking (SpecAugment)
+      time_warp: 0.5         # Time warping
+
+  # Spectrogram-specific settings (for existing augmentations)
+  resize:
+    enabled: true
+    height: 128
+    width: 1293
+    interpolation: 'bilinear'  # Options: 'bilinear', 'bicubic', 'nearest'
+  
+  normalization:
+    mean: [0.485, 0.456, 0.406]
+    std: [0.229, 0.224, 0.225]
+
+# Model configuration
+model:
+  input_channels: 1        # Mono audio (1 channel)
+  embedding_dim: 256       # Embedding dimension
+  base_channels: 64        # Base number of channels in CNN
+
+# Training configuration
+training:
+  batch_size: 64
+  num_epochs: 200
+  learning_rate: 0.0001
+  weight_decay: 0.0001
+  
+  # Optimizer
+  optimizer:
+    type: 'adam'
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+  
+  # Learning rate scheduler
+  scheduler:
+    type: 'cosine'
+    T_max: 100              # Maximum number of iterations
+    eta_min: 0.000001       # Minimum learning rate
+  
+  # Contrastive loss
+  loss:
+    temperature: 0.07       # Temperature parameter for contrastive loss
+    
+  # Checkpointing
+  checkpoint:
+    save_every: 20          # Save checkpoint every N epochs
+    save_best: true         # Save best model based on validation loss
+
+# Data configuration
+data:
+  train_dir: 'AudioToSpectogram/fma_small_dataset/train'
+  val_dir: 'AudioToSpectogram/fma_small_dataset/val'
+  
+  # Dataloader settings
+  dataloader:
+    num_workers: 10
+    pin_memory: true
+    drop_last: true
+    persistent_workers: true
+
+# Output configuration
+output:
+  checkpoint_dir: 'checkpoints'
+  log_dir: 'runs'
+  save_embeddings: true
+  embedding_dir: 'embeddings_db'

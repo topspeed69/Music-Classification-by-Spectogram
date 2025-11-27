@@ -8,7 +8,7 @@ model:
   input:
     n_mels: 128              # Number of mel frequency bins
     time_steps: 1293         # Approximate time steps for 30s audio
-    channels: 3              # RGB channels (converted from grayscale)
+    channels: 1              # Grayscale spectrograms (1 channel)
   
   # CNN Encoder Architecture
   encoder:
@@ -71,7 +71,7 @@ initialization:
   
 # Checkpoint settings
 checkpoint:
-  save_frequency: 5          # Save every N epochs
+  save_frequency: 20          # Save every N epochs
   save_best_only: true       # Only save when validation improves
   metric: "val_loss"         # Metric to monitor for best model
   mode: "min"                # 'min' or 'max'

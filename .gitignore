@@ -1,26 +1,29 @@
 # Image and audio files ----------------------------------------------------------------------------------------------
 *.jpg
 *.jpeg
-*.png
 *.bmp
 *.tif
 *.tiff
 *.heic
 *.JPG
 *.JPEG
-*.PNG
 *.BMP
 *.TIF
 *.TIFF
 *.HEIC
 *.wav
 *.m4a
+*.log
+*.pth
 
 
 # Folders -------------------------------------------------------------------------------------------------------------
-AudioToSpectogram/output/
-AudioToSpectogram/output_mel
-AudioToSpectogram/fma_small_dataset/
+AudioToSpectogram/output/*
+!AudioToSpectogram/output/README.md
+AudioToSpectogram/output_mel/*
+!AudioToSpectogram/output_mel/README.md
+AudioToSpectogram/fma_small_dataset/*
+!AudioToSpectogram/fma_small_dataset/README.md
  
 # GitHub Python GitIgnore ----------------------------------------------------------------------------------------------
 # Byte-compiled / optimized / DLL files

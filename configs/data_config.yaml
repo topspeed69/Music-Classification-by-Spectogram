@@ -1,15 +1,24 @@
 # Data Configuration for Audio Processing and Augmentation
 
 data:
-  # Audio settings
+  # Data source configuration
+  # For audio augmentation pipeline (new)
+  audio_dir: 'AudioToSpectogram/fma_small_dataset'  # Directory with audio files
+  train_val_split: 0.8                               # 80% train, 20% validation
+  
+  # For spectrogram-only pipeline (legacy)
+  train_dir: 'data/train'                            # Directory with pre-computed spectrograms
+  val_dir: 'data/val'                                # Directory with validation spectrograms
+  
+  # Audio settings for waveform processing
   audio:
     sample_rate: 22050      # Sample rate for audio
-    duration: 30            # Audio duration in seconds
+    duration: 3.0           # Audio duration in seconds (reduced from 30 for faster processing)
     n_fft: 2048            # FFT window size
     hop_length: 512        # Hop length for STFT
     n_mels: 128            # Number of mel frequency bins
     fmin: 0                # Minimum frequency
-    fmax: 8000             # Maximum frequency
+    fmax: 8000             # Maximum frequency (Nyquist: sr/2 = 11025)
   
   # Spectrogram settings
   spectrogram:
@@ -20,23 +29,24 @@ data:
     amin: 1e-10            # Minimum amplitude threshold
     top_db: 80             # Top dB value for normalization
   
-  # Dataset split ratios
+  # Dataset split ratios (for manual splitting)
   split:
     train: 0.8
-    validation: 0.1
-    test: 0.1
+    validation: 0.2        # Changed from 0.1 to 0.2 (using 80/20 split)
+    test: 0.0              # No test set in current setup
     shuffle: true
     stratify: false        # Stratify by labels if available
   
   # Data loading
   dataloader:
-    batch_size: 32         # Reduced from 128 to 32 to avoid CUDA OOM
-    num_workers: 4
+    batch_size: 64         # Batch size (adjust based on GPU memory)
+    num_workers: 10         # Number of worker threads
     pin_memory: true
     shuffle_train: true
     shuffle_val: false
     drop_last: true        # Drop incomplete batches
     prefetch_factor: 2     # Prefetch batches per worker
+    persistent_workers: true  # Keep workers alive between epochs
 
 # Augmentation Configuration
 augmentation:
@@ -56,7 +66,7 @@ augmentation:
     
     # 2. Color Jitter (Intensity variations)
     color_jitter:
-      enabled: true
+      enabled: false
       probability: 0.8
       brightness: 0.4       # Brightness adjustment range
       contrast: 0.4         # Contrast adjustment range
@@ -73,7 +83,7 @@ augmentation:
     
     # 4. Horizontal Flip (Time reversal)
     horizontal_flip:
-      enabled: true
+      enabled: false
       probability: 0.5      # 50% chance to flip
     
     # 5. Frequency Masking (SpecAugment)
@@ -126,6 +136,10 @@ preprocessing:
   dtype: "float32"
   
   # Cache spectrograms in memory (for small datasets)
+  cache_in_memory: false
+
+# Note: For audio-based augmentation, use audio_augmentation_config.yaml instead
+# The augmentation settings above apply to pre-computed spectrogram images only
   cache_data: false
 
 # Paths
