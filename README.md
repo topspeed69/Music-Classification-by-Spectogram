@@ -1,4 +1,4 @@
-# Music Classification and Recommendation System
+# Music Classification and Recommendation System by spectogram
 ## Self-Supervised Learning on Audio Spectrograms
 
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
