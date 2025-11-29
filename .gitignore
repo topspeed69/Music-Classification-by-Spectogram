@@ -16,7 +16,6 @@
 *.log
 *.pth
 
-
 # Folders -------------------------------------------------------------------------------------------------------------
 AudioToSpectogram/output/*
 !AudioToSpectogram/output/README.md
@@ -24,6 +23,9 @@ AudioToSpectogram/output_mel/*
 !AudioToSpectogram/output_mel/README.md
 AudioToSpectogram/fma_small_dataset/*
 !AudioToSpectogram/fma_small_dataset/README.md
+checkpoints/*
+!checkpoints/README.md
+
  
 # Embeddings DB: ignore generated / large files; keep README to preserve directory
 embeddings_db/*
